@@ -487,23 +487,33 @@ common_mappings = {
 
 special_mappings = {
     "Honeywell-Security": {
-        "state": {
+        # "state": {
+        #     "object_suffix": "opening",
+        #     "device_type": "binary_sensor",
+        #     "config":  {
+        #         "device_class": "opening",
+        #         "payload_on": "open",
+        #         "payload_off": "closed",
+        #         # "value_template": "{{value_json.state}}"
+        #     }
+        # },
+        # "event": {
+        #     "object_suffix": "lock",
+        #     "device_type": "binary_sensor",
+        #     "config":  {
+        #         "device_class": "lock",
+        #         "payload_on": "32",
+        #         "payload_off": "0",
+        #         # "value_template": "{{value_json.event}}"
+        #     }
+        # },
+        "event": {
             "object_suffix": "opening",
             "device_type": "binary_sensor",
             "config":  {
                 "device_class": "opening",
-                "payload_on": "open",
-                "payload_off": "closed",
-                # "value_template": "{{value_json.state}}"
-            }
-        },
-        "event": {
-            "object_suffix": "lock",
-            "device_type": "binary_sensor",
-            "config":  {
-                "device_class": "lock",
-                "payload_on": "32",
-                "payload_off": "0",
+                "payload_on": "160",
+                "payload_off": "128",
                 # "value_template": "{{value_json.event}}"
             }
         },
@@ -514,8 +524,8 @@ special_mappings = {
             "config":  {
                 "device_class": "connectivity",
                 "payload_on": "1",
-                "payload_off": "0",
-                # "value_template": "{% if value|int in [0,1] %}1{%endif%}",
+                # "payload_off": "0",
+                "value_template": "{% if value|int in [0,1] %}1{%endif%}",
                 "force_update": "true",
                 "expire_after": 4500
             }
