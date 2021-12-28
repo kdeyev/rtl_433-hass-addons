@@ -129,8 +129,8 @@ SKIP_KEYS = NAMING_KEYS + [ "mic", "mod", "freq", "sequence_num",
 # @todo - should probably externalize to a config file
 # @todo - Model specific definitions might be needed
 
-mappings = {
-    "temperature_C": {
+common_mappings = {
+   "temperature_C": {
         "device_type": "sensor",
         "object_suffix": "T",
         "config": {
@@ -485,6 +485,113 @@ mappings = {
     }
 }
 
+special_mappings = {
+    "Honeywell-Security": {
+        "state": {
+            "object_suffix": "opening",
+            "device_type": "binary_sensor",
+            "config":  {
+                "device_class": "opening",
+                "payload_on": "open",
+                "payload_off": "closed",
+                # "value_template": "{{value_json.state}}"
+            }
+        },
+        "event": {
+            "object_suffix": "lock",
+            "device_type": "binary_sensor",
+            "config":  {
+                "device_class": "lock",
+                "payload_on": "32",
+                "payload_off": "0",
+                # "value_template": "{{value_json.event}}"
+            }
+        },
+        "heartbeat": {
+            "object_suffix": "hb",
+            "device_type": "binary_sensor",
+            # "data_key": "state",
+            "config":  {
+                "device_class": "connectivity",
+                "payload_on": "1",
+                "payload_off": "0",
+                # "value_template": "{% if value_json.heartbeat in [0,1] %}1{%endif%}",
+                # "value_template": "{% if value in [0,1] %}1{%endif%}",
+                "force_update": "true",
+                "expire_after": 4500
+            }
+        },
+        "battery_ok": {
+            "object_suffix": "battery",
+            "device_type": "binary_sensor",
+            # "data_key": "state",
+            "config":  {
+                "device_class": "battery",
+                "payload_on": "1",
+                "payload_off": "0",
+                # "value_template": "{{value_json.battery_ok}}"
+            }
+        },
+        "tamper": {
+            "object_suffix": "tamper",
+            "device_type": "binary_sensor",
+            # "data_key": "state",
+            "config":  {
+                "device_class": "safety",
+                "payload_on": "1",
+                "payload_off": "0",
+                # "value_template": "{{value_json.tamper}}"
+            }
+        },
+        "alarm": {
+            "device_type": "binary_sensor",
+            "object_suffix": "alarm",
+            "config": {
+                "force_update": "true",
+                "payload_on": "1",
+                "payload_off": "0"
+            }
+        },
+
+        # "tamper": {
+        #     "device_type": "binary_sensor",
+        #     "object_suffix": "tamper",
+        #     "config": {
+        #         "force_update": "true",
+        #         "payload_on": "1",
+        #         "payload_off": "0"
+        #     }
+        # },
+        # "alarm": {
+        #     "device_type": "binary_sensor",
+        #     "object_suffix": "alarm",
+        #     "config": {
+        #         "force_update": "true",
+        #         "payload_on": "1",
+        #         "payload_off": "0"
+        #     }
+        # },
+        # "time": {
+        #     "device_type": "sensor",
+        #     "object_suffix": "UTC",
+        #     "config": {
+        #         "device_class": "timestamp",
+        #         "name": "Timestamp",
+        #         "icon": "mdi:clock-in"
+        #     }
+        # },
+        # "battery_ok": {
+        #     "device_type": "sensor",
+        #     "object_suffix": "B",
+        #     "config": {
+        #         "device_class": "battery",
+        #         "name": "Battery",
+        #         "unit_of_measurement": "%",
+        #         "value_template": "{{ float(value|int) * 99 + 1 }}"
+        #     }
+        # },
+    }
+}
 
 def mqtt_connect(client, userdata, flags, rc):
     """Callback for MQTT connects."""
@@ -590,6 +697,12 @@ def bridge_event_to_hass(mqttc, topicprefix, data):
         if not args.quiet:
             print("No suitable identifier found for model: ", model)
         return
+
+    if model in special_mappings:
+        mappings = special_mappings[model]
+    else:
+        mappings = common_mappings
+
 
     # detect known attributes
     for key in data.keys():
