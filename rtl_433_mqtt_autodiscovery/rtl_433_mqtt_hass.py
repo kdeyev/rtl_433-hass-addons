@@ -515,81 +515,53 @@ special_mappings = {
                 "device_class": "connectivity",
                 "payload_on": "1",
                 "payload_off": "0",
-                # "value_template": "{% if value_json.heartbeat in [0,1] %}1{%endif%}",
-                # "value_template": "{% if value in [0,1] %}1{%endif%}",
+                # "value_template": "{% if value|int in [0,1] %}1{%endif%}",
                 "force_update": "true",
                 "expire_after": 4500
             }
         },
         "battery_ok": {
-            "object_suffix": "battery",
             "device_type": "binary_sensor",
-            # "data_key": "state",
-            "config":  {
+            "object_suffix": "battery",
+            # "object_suffix": "B",
+            "config": {
                 "device_class": "battery",
+                "name": "Battery",
                 "payload_on": "1",
                 "payload_off": "0",
-                # "value_template": "{{value_json.battery_ok}}"
+                # "unit_of_measurement": "%",
+                # "value_template": "{{ float(value|int) * 99 + 1 }}"
             }
         },
         "tamper": {
-            "object_suffix": "tamper",
             "device_type": "binary_sensor",
-            # "data_key": "state",
-            "config":  {
+            "object_suffix": "tamper",
+            "config": {
                 "device_class": "safety",
+                "force_update": "true",
                 "payload_on": "1",
-                "payload_off": "0",
-                # "value_template": "{{value_json.tamper}}"
+                "payload_off": "0"
             }
         },
         "alarm": {
             "device_type": "binary_sensor",
             "object_suffix": "alarm",
             "config": {
+                "device_class": "safety",
                 "force_update": "true",
                 "payload_on": "1",
                 "payload_off": "0"
             }
         },
-
-        # "tamper": {
-        #     "device_type": "binary_sensor",
-        #     "object_suffix": "tamper",
-        #     "config": {
-        #         "force_update": "true",
-        #         "payload_on": "1",
-        #         "payload_off": "0"
-        #     }
-        # },
-        # "alarm": {
-        #     "device_type": "binary_sensor",
-        #     "object_suffix": "alarm",
-        #     "config": {
-        #         "force_update": "true",
-        #         "payload_on": "1",
-        #         "payload_off": "0"
-        #     }
-        # },
-        # "time": {
-        #     "device_type": "sensor",
-        #     "object_suffix": "UTC",
-        #     "config": {
-        #         "device_class": "timestamp",
-        #         "name": "Timestamp",
-        #         "icon": "mdi:clock-in"
-        #     }
-        # },
-        # "battery_ok": {
-        #     "device_type": "sensor",
-        #     "object_suffix": "B",
-        #     "config": {
-        #         "device_class": "battery",
-        #         "name": "Battery",
-        #         "unit_of_measurement": "%",
-        #         "value_template": "{{ float(value|int) * 99 + 1 }}"
-        #     }
-        # },
+        "time": {
+            "device_type": "sensor",
+            "object_suffix": "UTC",
+            "config": {
+                "device_class": "timestamp",
+                "name": "Timestamp",
+                "icon": "mdi:clock-in"
+            }
+        },
     }
 }
 
