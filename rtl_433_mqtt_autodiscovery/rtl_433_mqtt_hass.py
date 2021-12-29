@@ -514,7 +514,7 @@ special_mappings = {
                 "device_class": "opening",
                 "payload_on": "1",
                 "payload_off": "0",
-                "value_template": "{% if value|int in [128] %} 0 {%else%} 1 {%endif%}",
+                "value_template": "{% if value|int in [128, 132] %} 0 {%else%} 1 {%endif%}",
                 # "value_template": "{{value_json.event}}"
             }
         },
