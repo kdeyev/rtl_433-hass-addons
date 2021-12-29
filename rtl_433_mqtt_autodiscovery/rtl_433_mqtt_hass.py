@@ -512,8 +512,9 @@ special_mappings = {
             "device_type": "binary_sensor",
             "config":  {
                 "device_class": "opening",
-                "payload_on": "160",
-                "payload_off": "128",
+                "payload_on": "1",
+                "payload_off": "0",
+                "value_template": "{% if value|int in [128] %} 0 {%else%} 1 {%endif%}",
                 # "value_template": "{{value_json.event}}"
             }
         },
@@ -524,7 +525,7 @@ special_mappings = {
             "config":  {
                 "device_class": "connectivity",
                 "payload_on": "1",
-                # "payload_off": "0",
+                "payload_off": "0",
                 "value_template": "{% if value|int in [0,1] %}1{%endif%}",
                 "force_update": "true",
                 "expire_after": 4500
@@ -553,16 +554,16 @@ special_mappings = {
                 "payload_off": "0"
             }
         },
-        "alarm": {
-            "device_type": "binary_sensor",
-            "object_suffix": "alarm",
-            "config": {
-                "device_class": "safety",
-                "force_update": "true",
-                "payload_on": "1",
-                "payload_off": "0"
-            }
-        },
+        # "alarm": {
+        #     "device_type": "binary_sensor",
+        #     "object_suffix": "alarm",
+        #     "config": {
+        #         "device_class": "safety",
+        #         "force_update": "true",
+        #         "payload_on": "1",
+        #         "payload_off": "0"
+        #     }
+        # },
     }
 }
 
